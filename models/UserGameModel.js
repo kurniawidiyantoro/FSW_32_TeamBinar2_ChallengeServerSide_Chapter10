@@ -1,5 +1,6 @@
 const { sequelize } = require('../config');
 const { DataTypes } = require('sequelize');
+const { GameHistoryModel } = require('./GameHistoryModel');
 
 class UserGameModel {
     #model = sequelize.define('user_game', {
@@ -99,23 +100,7 @@ class UserGameModel {
         } else {
             throw new Error('User not found.');
         }
-    }
-
-    async updateUserScores(id, newScores) {
-        const userData = await this.#model.findOne({
-            where: {
-                id
-            }
-        });
-
-        if (userData) {
-            userData.scores = parseInt(newScores);
-            await userData.save();
-            return userData;
-        } else {
-            throw new Error('User not found.');
-        }
-    }
+    } 
 };
 
 const userGameModel = new UserGameModel();
