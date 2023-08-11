@@ -1,5 +1,5 @@
 const { userGameModel } = require('../models/UserGameModel')
-const GameHistoryModel = require('../models/GameHistoryModel');
+const { gameHistoryModel } = require('../models/GameHistoryModel');
 const CryptoJS = require('crypto-js');
 
 class UserGameController {
@@ -134,23 +134,12 @@ class UserGameController {
         }  
     }
 
-    static async updateScores(req, res) {
+    static async insertGameHistory(req, res) {
         try {
-            const { id, scores, gamename, username, email } = req.body;
-    
-            const userGameHistory = await GameHistoryModel.getUserGameHistory(username, email);
-    
-            // round + 1
-            const nextRound = userGameHistory.round + 1;
-    
-            const newTotalScore = userGameHistory.totalscore + scores;
-    
-            // Insert new game history 
-            await GameHistoryModel.insertGameHistory(gamename, username, email, nextRound, scores, newTotalScore);
-    
-            await GameHistoryModel.updateUserTotalScore(id, newTotalScore);
-    
-            res.json({ status: 'Success Update Scores and Insert Game History!' });
+            const data = req.body;
+            console.log(data);
+            const newData = await gameHistoryModel.insertGameHistory(data);
+            res.json({ newData, status: 'Success Update Scores and Insert Game History!' });
         } catch(error) {
             console.log(error);
             res.status(500).send('Internal Server Error!');
@@ -159,24 +148,17 @@ class UserGameController {
 
     static async getGameHistory(req, res) {
         try {
-            const { attributes } = req.body;
-    
-            let selectedAttributes = ['id', 'gamename', 'username', 'email', 'round', 'getscore', 'totalscore'];
-    
-            if (attributes && Array.isArray(attributes)) {
-                selectedAttributes = attributes.filter(attribute => selectedAttributes.includes(attribute));
-            }
-    
-            const gameHistoryData = await GameHistoryModel.GameHistory.findAll({
-                attributes: selectedAttributes,
-            });
-    
-            res.json({ data: gameHistoryData });
-        } catch (error) {
+            const gamename = req.body.gamename;
+            const email = req.body.email;
+            console.log('Get email: ',email);
+            console.log('Get gamename: ',gamename);
+            const gameHistory = await gameHistoryModel.getGameHistory(gamename, email);
+            res.json({ data: gameHistory });
+        } catch(error) {
             console.log(error);
             res.status(500).send('Internal Server Error!');
-        }
-    }    
+        }  
+    }   
 };
 
 module.exports = { UserGameController }

@@ -1,6 +1,5 @@
 const { sequelize } = require('../config');
 const { DataTypes } = require('sequelize');
-const { GameHistoryModel } = require('./GameHistoryModel');
 
 class UserGameModel {
     #model = sequelize.define('user_game', {
@@ -23,7 +22,7 @@ class UserGameModel {
         tableName: 'user_game',
         updatedAt: false,
         underscored: true
-    })
+    });
 
     // === QUERY
     async getAllUserGame() {
@@ -104,4 +103,4 @@ class UserGameModel {
 };
 
 const userGameModel = new UserGameModel();
-module.exports = { userGameModel }
+module.exports = { userGameModel };

@@ -17,9 +17,10 @@ router.post('/usergame/upload-profile-pic', FirebaseController.uploadImage);
 router.post('/usergame/get', AuthorizationCheck, UserGameController.getData);
 router.post('/usergame/update/profile', AuthorizationCheck, UserGameController.updateProfile);
 router.post('/usergame/update/password', AuthorizationCheck, UserGameController.updatePassword);
-router.post('/usergame/update/scores', AuthorizationCheck, UserGameController.updateScores); // 
 router.post('/usergame/getProfilePicUrl', AuthorizationCheck, FirebaseController.getProfilePicUrl);
-router.post('/usergame/usergame/getUserGameHistory', AuthorizationCheck, UserGameController.getGameHistory); 
-
+router.post('/gamehistory/insert', AuthorizationCheck, UserGameController.insertGameHistory);
+// router.post('/gamehistory/insert', UserGameController.insertGameHistory);
+router.post('/gamehistory/get', AuthorizationCheck, UserGameController.getGameHistory); 
+// router.post('/gamehistory/get', UserGameController.getGameHistory); 
 
 module.exports = router;
