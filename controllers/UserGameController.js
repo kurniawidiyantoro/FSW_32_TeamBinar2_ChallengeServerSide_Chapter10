@@ -73,6 +73,46 @@ class UserGameController {
             }
 
             await userGameModel.insertNewUserGame(newData);
+
+            const userGame = await userGameModel.getUserGame(inputEmail);
+
+            const formGameRps = {
+                gamename: 'gamerps',
+                id: userGame.id,
+                username: userGame.username,
+                email: userGame.email,
+                round: 0,
+                status: 'registered',
+                getscore: 0,
+                totalscore: 0
+            }
+
+            const formGameCoin = {
+                gamename: 'gamecoin',
+                id: userGame.id,
+                username: userGame.username,
+                email: userGame.email,
+                round: 0,
+                status: 'registered',
+                getscore: 0,
+                totalscore: 0
+            }
+
+            const formGameDice = {
+                gamename: 'gamedice',
+                id: userGame.id,
+                username: userGame.username,
+                email: userGame.email,
+                round: 0,
+                status: 'registered',
+                getscore: 0,
+                totalscore: 0
+            }
+
+            await gameHistoryModel.insertGameHistory(formGameRps);
+            await gameHistoryModel.insertGameHistory(formGameCoin);
+            await gameHistoryModel.insertGameHistory(formGameDice);
+
             res.json({ status: 'success' });
         } catch(error) {
             console.log(error);
