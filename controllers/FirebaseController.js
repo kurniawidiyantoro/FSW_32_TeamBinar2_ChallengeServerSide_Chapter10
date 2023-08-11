@@ -1,3 +1,4 @@
+const { userGameModel } = require('../models/UserGameModel')
 const multer = require("multer");
 const admin = require("../lib/FirebaseAdmin");
 const storage = admin.storage().bucket();
@@ -7,6 +8,14 @@ const upload = multer({ dest: "./uploads" });
 
 class FirebaseController {
   static async uploadImage(req, res) {
+    // Panggil usergame/get
+    // const email = req.body.email;
+    // console.log('Emailnya adalah:', email);
+    // const userGame = await userGameModel.getUserGame(email);
+    // const id = userGame.id;
+
+    // console.log('ID adalah:', id);
+
     upload.single("profilepic")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         return res.status(500).json({ message: "Error processing the file upload" });
@@ -16,6 +25,11 @@ class FirebaseController {
 
       const { username, email, password, confirmPassword, scores } = req.body;
       const file = req.file;
+
+      const userGame = await userGameModel.getUserGame(email);
+      const id = userGame.id;
+
+      console.log('ID adalah:', id);
 
       if (!file) {
         return res.status(400).json({ message: "No photo provided" });
