@@ -1,4 +1,5 @@
 const { userGameModel } = require('../models/UserGameModel')
+const GameHistoryModel = require('../models/GameHistoryModel');
 const CryptoJS = require('crypto-js');
 
 class UserGameController {
@@ -135,17 +136,47 @@ class UserGameController {
 
     static async updateScores(req, res) {
         try {
-            // 1. ambil semua data user game
-            const id = req.body.id;
-            const scores = req.body.scores;
-
-            const newData = await userGameModel.updateUserScores(id, scores);
-            res.json({ newData, status: 'Success Update Scores !' });
+            const { id, scores, gamename, username, email } = req.body;
+    
+            const userGameHistory = await GameHistoryModel.getUserGameHistory(username, email);
+    
+            // round + 1
+            const nextRound = userGameHistory.round + 1;
+    
+            const newTotalScore = userGameHistory.totalscore + scores;
+    
+            // Insert new game history 
+            await GameHistoryModel.insertGameHistory(gamename, username, email, nextRound, scores, newTotalScore);
+    
+            await GameHistoryModel.updateUserTotalScore(id, newTotalScore);
+    
+            res.json({ status: 'Success Update Scores and Insert Game History!' });
         } catch(error) {
             console.log(error);
             res.status(500).send('Internal Server Error!');
-        }  
+        }
     }
+
+    static async getGameHistory(req, res) {
+        try {
+            const { attributes } = req.body;
+    
+            let selectedAttributes = ['id', 'gamename', 'username', 'email', 'round', 'getscore', 'totalscore'];
+    
+            if (attributes && Array.isArray(attributes)) {
+                selectedAttributes = attributes.filter(attribute => selectedAttributes.includes(attribute));
+            }
+    
+            const gameHistoryData = await GameHistoryModel.GameHistory.findAll({
+                attributes: selectedAttributes,
+            });
+    
+            res.json({ data: gameHistoryData });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error!');
+        }
+    }    
 };
 
 module.exports = { UserGameController }
