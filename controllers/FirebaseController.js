@@ -43,7 +43,7 @@ class FirebaseController {
       const fileExtension = (file.originalname && typeof file.originalname === "string" && file.originalname !== "")
         ? file.originalname.split(".").pop()
         : null;
-      const newFilename = `avatar_${username}.${fileExtension}`;
+      const newFilename = `avatar_${id}.${fileExtension}`;
       const newPath = `./uploads/${newFilename}`;
 
       fs.rename(oldPath, newPath, async (renameErr) => {
@@ -74,20 +74,20 @@ class FirebaseController {
 
   static async getProfilePicUrl(req, res) {
     try {
-      const username = req.body.inputUsername;
-      console.log("username:", username) 
+      const id = userGame.id;
+      console.log("id:", id) 
       const fileFormats = ['png', 'jpg', 'jpeg']; // format file
       let profilePicUrl = null;
 
       for (const format of fileFormats) {
         console.log('format: ',format);
-        const profilePicRef = storage.file(`avatars/avatar_${username}.${format}`);
+        const profilePicRef = storage.file(`avatars/avatar_${id}.${format}`);
         const url = await profilePicRef.getSignedUrl({
           action: 'read',
           expires: '03-01-2025',
         });
 
-        // Check if the URL exists, if so, set it to profilePicUrl and break the loop
+        // Check url, kalok ada break the loop
         if (url && url.length > 0) {
           profilePicUrl = url[0];
           break;
