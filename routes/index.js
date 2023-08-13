@@ -19,8 +19,8 @@ router.post('/usergame/update/profile', AuthorizationCheck, UserGameController.u
 router.post('/usergame/update/password', AuthorizationCheck, UserGameController.updatePassword);
 router.post('/usergame/getProfilePicUrl', AuthorizationCheck, FirebaseController.getProfilePicUrl);
 router.post('/gamehistory/insert', AuthorizationCheck, UserGameController.insertGameHistory);
-// router.post('/gamehistory/insert', UserGameController.insertGameHistory);
 router.post('/gamehistory/get', AuthorizationCheck, UserGameController.getGameHistory); 
-// router.post('/gamehistory/get', UserGameController.getGameHistory); 
+router.post('/gamehistory/get/all', UserGameController.getAllGameHistory);
+router.post('/gamehistory/get/rank', UserGameController.getRankGameHistory);
 
 module.exports = router;

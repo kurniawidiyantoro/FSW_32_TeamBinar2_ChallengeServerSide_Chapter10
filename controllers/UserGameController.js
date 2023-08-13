@@ -198,7 +198,33 @@ class UserGameController {
             console.log(error);
             res.status(500).send('Internal Server Error!');
         }  
-    }   
+    }  
+    
+    static async getAllGameHistory(req, res) {
+        try {
+            const gamename = req.body.gamename;
+            const email = req.body.email;
+            console.log('Get email: ', email);
+            console.log('Get gamename: ', gamename);
+            const allGameHistory = await gameHistoryModel.getAllGameHistory(gamename, email);
+            res.json({ data: allGameHistory });
+        } catch(error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error!');
+        }  
+    }
+
+    static async getRankGameHistory(req, res) {
+        try {
+            const gamename = req.body.gamename;
+            console.log('Get gamename: ', gamename);
+            const rankGameHistory = await gameHistoryModel.getRankGameHistory(gamename);
+            res.json({ data: rankGameHistory });
+        } catch(error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error!');
+        }  
+    }
 };
 
 module.exports = { UserGameController }

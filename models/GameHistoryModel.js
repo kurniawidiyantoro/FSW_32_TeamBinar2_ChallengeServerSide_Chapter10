@@ -1,4 +1,4 @@
-const { sequelize } = require('../config');
+const { sequelize, client } = require('../config');
 const { DataTypes } = require('sequelize');
 
 class GameHistoryModel {
@@ -58,6 +58,32 @@ class GameHistoryModel {
       attributes: ['gamename', 'id', 'username', 'email', 'round', 'status', 'getscore', 'totalscore'],
       raw: true
     });
+    return data;
+  }
+
+  async getAllGameHistory(gamename, email) {
+    const data = await this.#model.findAll({ 
+      where: { 
+        gamename, 
+        email
+      }, 
+      order: [['round', 'ASC']],
+      attributes: ['gamename', 'id', 'username', 'email', 'round', 'status', 'getscore', 'totalscore'],
+      raw: true
+    });
+    return data;
+  }
+
+  async getRankGameHistory(gamename) {
+    await client.connect();
+    const query = `
+      select * from ( SELECT DISTINCT ON (username) *
+      FROM game_history
+      WHERE gamename = '${gamename}'
+      ORDER BY username, totalscore desc ) as rank
+      order by totalscore desc
+    `;
+    const data = await client.query(query);
     return data;
   }
 }

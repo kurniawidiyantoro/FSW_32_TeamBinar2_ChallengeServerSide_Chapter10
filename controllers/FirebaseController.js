@@ -8,14 +8,6 @@ const upload = multer({ dest: "./uploads" });
 
 class FirebaseController {
   static async uploadImage(req, res) {
-    // Panggil usergame/get
-    // const email = req.body.email;
-    // console.log('Emailnya adalah:', email);
-    // const userGame = await userGameModel.getUserGame(email);
-    // const id = userGame.id;
-
-    // console.log('ID adalah:', id);
-
     upload.single("profilepic")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
         return res.status(500).json({ message: "Error processing the file upload" });
@@ -67,7 +59,6 @@ class FirebaseController {
           console.error("Error uploading file to Firebase Storage:", uploadError);
           return res.status(500).json({ message: "Error uploading file to Firebase Storage" });
         }
-        
       });
     });
   }
