@@ -1,6 +1,12 @@
 const { sequelize, client } = require('../config');
 const { DataTypes } = require('sequelize');
 
+const activateClient = async () => {
+  await client.connect();
+}
+
+activateClient();
+
 class GameHistoryModel {
   #model = sequelize.define('game_history', {
     gamename: {
@@ -75,7 +81,6 @@ class GameHistoryModel {
   }
 
   async getRankGameHistory(gamename) {
-    await client.connect();
     const query = `
       select * from ( SELECT DISTINCT ON (username) *
       FROM game_history
