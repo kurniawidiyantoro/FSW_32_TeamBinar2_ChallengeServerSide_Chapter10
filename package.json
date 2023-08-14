@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "dotenv-load nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "dotenv-load nodemon ./bin/www"
   },
   "dependencies": {
     "@google-cloud/storage": "^6.12.0",
@@ -30,5 +31,21 @@
   "devDependencies": {
     "dotenv-load": "^2.0.1",
     "nodemon": "^2.0.22"
-  }
+  },
+  "main": "app.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kurniawidiyantoro/FSW_32_TeamBinar2_ChallengeServerSide_Chapter10.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kurniawidiyantoro/FSW_32_TeamBinar2_ChallengeServerSide_Chapter10/issues"
+  },
+  "homepage": "https://github.com/kurniawidiyantoro/FSW_32_TeamBinar2_ChallengeServerSide_Chapter10#readme",
+  "description": ""
 }
