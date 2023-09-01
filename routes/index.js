@@ -9,7 +9,7 @@ const { FirebaseController } = require('../controllers/FirebaseController');
 const { AuthorizationCheck } = require('../lib/AuthorizationCheck');
 
 // halaman root
-router.get("/", (req, res) => res.send("chapter 10 team 2"));
+router.get("/", (req, res) => res.send("hello chapter 10 team 2"));
 
 /* Auth API */
 router.post('/login', AuthController.login);
